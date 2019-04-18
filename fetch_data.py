@@ -132,8 +132,8 @@ d = fetch_data(review_file, rating_file, meta_file)
 
 top_brands = get_top_k_brands(d, 10)
 dictionary = get_brand_word_clouds(top_brands, d)
-for k, v in dictionary.items():
-    print(k, len(v))
+with open('result.json', 'w') as fp:
+    json.dump(dictionary, fp)
 
     # Brand frequency
     # fig, ax = plt.subplots()
