@@ -1,15 +1,24 @@
 import csv
+<<<<<<< HEAD
 from textblob import TextBlob
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
+=======
+
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
 import pandas as pd
 import time
 import json
 from collections import Counter
 # Load library
+<<<<<<< HEAD
 import numpy as np
+=======
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 # You will have to download the set of stop words the first time
@@ -38,7 +47,11 @@ def fetch_data(review_file_path, meta_file_path):
                             brand_count_dict[d['brand']] += 1
                         else:
                             brand_count_dict[d['brand']] = 1
+<<<<<<< HEAD
                         val = {'asin': d['asin'], 'title':d['title'],'imUrl': d['imUrl'], 'brand': d['brand']}
+=======
+                        val = {'asin': d['asin'], 'imUrl': d['imUrl'], 'brand': d['brand']}
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
                         meta_item_dict[d['asin']] = val
             except:
                 continue
@@ -60,21 +73,35 @@ def fetch_data(review_file_path, meta_file_path):
                     # s = s.replace(";"," ")
                     # s = s+";"
                     rating = itemwise_rating_dict[d['asin']]
+<<<<<<< HEAD
                     rating[int(d['overall']-1)] += 1
                     itemwise_rating_dict[d['asin']] = rating
+=======
+                    rating[int(d['overall'])] += 1
+                    itemwise_rating_dict[d['asin']] = rating
+
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
                     itemwise_review_dict[d['asin']].append([s])
                 elif d['asin'] in meta_item_dict:
                     s = d['reviewText']
                     # s = s.replace(";", " ")
                     # s = s + ";"
                     rating = [0, 0, 0, 0, 0]
+<<<<<<< HEAD
                     rating[int(d['overall']-1)] = 1
+=======
+                    rating[int(d['overall'])] = 1
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
                     itemwise_rating_dict[d['asin']] = rating
                     itemwise_review_dict[d['asin']] = [[s]]
                 else:
                     continue
+<<<<<<< HEAD
             except Exception as e:
                 print("the error is::",e)
+=======
+            except:
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
                 continue
 
     # Merge data from all 3 based on asin
@@ -88,7 +115,11 @@ def fetch_data(review_file_path, meta_file_path):
             reviews = itemwise_review_dict[asin1]
             metadata = meta_item_dict[asin1]
             final_list.append(
+<<<<<<< HEAD
                 {'asin': asin1, 'reviews': reviews, 'imUrl': metadata['imUrl'],'title': metadata['title'],
+=======
+                {'asin': asin1, 'reviews': reviews, 'imUrl': metadata['imUrl'],
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
                  'brand': metadata['brand'], 'rating': itemwise_rating_dict[asin1]})
 
     return pd.DataFrame(final_list), common_brandsdict
@@ -132,15 +163,23 @@ def sentiment_analyzer_scores(sentence):
 compound_product_sentiment = {}
 overall_brand_sentiment = {}
 total_reviews = []
+<<<<<<< HEAD
 product_name = []
 for index, row in grp1.iterrows():
     total_reviews.append(len(row['reviews']))
     product_name.append((row['title']))
+=======
+for index, row in grp1.iterrows():
+    total_reviews.append(len(row['reviews']))
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
     compound_product_sentiment[row['asin']] = sentiment_analyzer_scores(row['reviews'])
 grp1['total_reviews'] = total_reviews
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
 def findsentiment_label():
     label = []
     sentiment = []
@@ -194,11 +233,16 @@ write_piechartjson(grouped_df)
 
 # #products with a minimum review count of 15
 filtered_output = grp1.loc[grp1['total_reviews'] > 15]
+<<<<<<< HEAD
 #filtered_output.to_csv('filtered_output.csv')
+=======
+# filtered_output.to_csv('filtered_output.csv')
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
 
 # Select the top k products by changing the head count
 df1 = filtered_output.sort_values('sentiment', ascending=False).groupby('brand').head(8)
 
+<<<<<<< HEAD
 df1 = df1.sort_values('brand', ascending=True)
 
 # Write the final data required in a csv ( asin	brand	imUrl	rating	reviews	total_reviews	sentiment	label	best_review	)
@@ -206,6 +250,10 @@ df1 = df1.sort_values('brand', ascending=True)
 
 with open("Final_json.json","w+",encoding='utf-8') as json_file:
     df1.to_json(json_file,orient="records",force_ascii=False)
+=======
+# Write the final data required in a csv ( asin	brand	imUrl	rating	reviews	total_reviews	sentiment	label	best_review	)
+df1.to_csv('final.csv')
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
 
 
 # Word Cloud for each top product
@@ -232,7 +280,10 @@ def calculate_word_frequency(st):
     # Post: return a list of words ordered from the most
     # frequent to the least frequent
     import string
+<<<<<<< HEAD
 
+=======
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
     text = ""
     for j in st:
         text = text + " " + j[0].lower()
@@ -245,6 +296,7 @@ def calculate_word_frequency(st):
     filtered_sentence = [w for w in word_tokens if w not in stop_words]
     words = Counter()
     words.update(filtered_sentence)
+<<<<<<< HEAD
     frequent_words = words.most_common(200)
     sentiment = 0
     count = 0
@@ -267,6 +319,10 @@ def calculate_word_frequency(st):
     #print(pos_neg_sent_dict)
     return pos_neg_sent_dict
     #return dict(frequent_words)
+=======
+    frequent_words = words.most_common(50)
+    return dict(frequent_words)
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
 
 
 # Calculate word frequency of a product and write json data word cloud
@@ -278,6 +334,7 @@ with open('wordCloud.json', 'w') as fp:
         freq_list = {s: diction}
         fp.write(json.dumps(freq_list) + "\n")
 
+<<<<<<< HEAD
 print("Execution Time: ", time.clock()-start)
 
 
@@ -346,3 +403,6 @@ def get_lda_words(data, top_brands):
 
 
 get_lda_words(op, common_brands)
+=======
+print("Execution Time: ", time.clock()-start)
+>>>>>>> 18bfeabedab1b93401c0b52a3520623cbaab804c
