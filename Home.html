@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+    svg {
+        font: 16px"Avenir";
+
+    }
+
+    div.tooltip {
+        position: absolute;
+        text-align: center;
+        width: 60px;
+        height: 45px;
+        padding: 2px;
+        font: 12px sans-serif;
+        //background: lightsteelblue;
+        background: orange;
+        //background: #232f3e;
+        border: 0px;
+        border-radius: 8px;
+        pointer-events: none;
+    }
+
+	
+	path {  stroke: #fff; }
+path:hover {  opacity:0.9; }
+rect:hover {  fill:blue; }
+.axis {  font: 10px sans-serif; }
+.legend tr{    border-bottom:1px solid grey; }
+.legend tr:first-child{    border-top:1px solid grey; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {  display: none; }
+.legend{
+    margin-bottom:76px;
+    display:inline-block;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.legend td{
+    padding:4px 5px;
+    vertical-align:bottom;
+}
+.legendFreq, .legendPerc{
+    align:right;
+    width:50px;
+}
+  .Tab-Content {
+     float: right;
+    padding: 0px 12px;
+   
+    width: 90%;
+    border-left: none;
+       
+    align-content: center;
+    margin: auto;
+top:50px;
+
+}
+ .Tab {
+    float: left;
+    background-color: #f1f1f1;
+    width: 6%;
+    height: 100%;
+    position:static;
+      z-index: 10;
+     top:50px;
+}
+    .Tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 12px 8px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+    .flag{
+        width: 60px;
+        height:40px;
+        
+    }
+    .flag:hover{
+        transform: scale(1.3);
+    }
+    
+    #game img {
+	   width:110px;
+	   height:110px;
+	   padding: 0px 0px 0px 0px;
+	   margin: 0px 0px 0px 0px;
+/*	   border:1px solid red; */
+	   font-size:3em;
+    }
+div.sample
+    {
+        transition: "all 2s";
+                
+    }
+   
+div.container {
+      display:inline-block;
+    }
+
+.middle {
+  transition: .10s ease;
+  opacity: 0;
+  position: relative;
+  text-align: center;
+  padding-top: 5%;
+}
+
+.container:hover .image {
+  opacity: 0.3;
+}
+
+.container:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  //background-color: orange;
+  background-color: #232f3e;
+  color: white;
+  font-size: 16px;
+  padding: 7px 13px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    overflow: auto;
+}
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+ #back2Top {
+    width: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    z-index: 999;
+    display: none;
+    cursor: pointer;
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+    position: fixed;
+    bottom: 50px;
+    right: 0;
+    background-color: #DDD;
+    color: #555;
+    text-align: center;
+    font-size: 30px;
+    text-decoration: none;
+}
+#back2Top:hover {
+    background-color: #DDF;
+    color: #000;
+}   
+    * {
+    box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 32%;
+    margin-top: 20px;
+    margin-right: 1px;
+    height: 300px; /* Should be removed. Only for demonstration */
+   
+    text-align: center;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-content: center;
+    align-content: center;
+}
+    .columnhelpful {
+    float: left;
+    padding: 10px;
+    height: 50px; /* Should be removed. Only for demonstration */
+    padding: 10px;
+    //background: orange;
+    background: #232f3e;
+    clip-path: polygon(100% 0, 95% 50%, 100% 100%, 0% 100%, 5% 50%, 0% 0%);
+    font-family: "font_condensed";
+    text-transform: uppercase;
+    color: white;
+    letter-spacing: 0.1em;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 98%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.ribbon {
+  position: relative;
+  right: 0px; top: 0px;
+  z-index: 1;
+  overflow: hidden;
+  width: 120px; height: 120px;
+  text-align: right;
+}
+.ribbon span {
+  font-size: 10px;
+  font-weight: bold;
+  color: #FFF;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  width: 100px;
+  display: block;
+  background: #79A70A;
+  background: linear-gradient(#9BC90D 0%, #79A70A 100%);
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px; right: -21px;
+}
+.ribbon span::before {
+  content: "";
+  position: absolute; left: 0px; top: 100%;
+  z-index: -1;
+  border-left: 1px solid #79A70A;
+  border-right: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid #79A70A;
+}
+.ribbon span::after {
+  content: "";
+  position: absolute; right: 0px; top: 100%;
+  z-index: -1;
+  border-left: 1px solid transparent;
+  border-right: 1px solid #79A70A;
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid #79A70A;
+}
+
+
+h4
+{
+	position: relative;
+	width: 12%;
+    font-size: 16px;
+	font-weight: bold;
+	padding: 6px 20px 6px 20px;
+	margin: 30px 10px 10px 20px;
+	color: antiquewhite;
+	background-color: orange;
+	text-shadow: 0px 1px 2px orange;
+	-webkit-box-shadow: 0px 2px 4px orange;
+	-moz-box-shadow: 0px 2px 4px orange;
+	box-shadow: 0px 2px 4px orange;
+}
+h4:after
+{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 0px;
+	top: 100%;
+	border-width: 5px 10px;
+	border-style: solid;
+	border-color: brown brown transparent transparent;
+}
+h4:before
+{
+	content: ' ';
+	position: absolute;
+	width: 30px;
+	height: 0;
+	left: -30px;
+	top: 12px;
+	border-width: 15px 10px;
+	border-style: solid;
+	border-color: orange orange orange transparent;
+}
+    
+    //user rating css
+    
+    .heading {
+    font-size: 25px;
+    margin-right: 25px;
+}
+
+.fa {
+    font-size: 25px;
+}
+
+.checked {
+    color: orange;
+}
+    
+    .unchecked {
+    color: black;
+}
+
+/* Three column layout */
+.side {
+    float: left;
+    width: 15%;
+    margin-top:10px;
+}
+
+.middlebar {
+    margin-top:10px;
+    float: left;
+    width: 70%;
+}
+
+/* Place text to the right */
+.right {
+    text-align: right;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* The bar container */
+.bar-container {
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    color: white;
+}
+
+/* Individual bars */
+.bar-5 {width: 30%;height: 18px; background-color: #006600;}
+.bar-4 {width: 30%; height: 18px; background-color: #4CAF50;}
+.bar-3 {width: 10%; height: 18px; background-color: #ffcc00;}
+.bar-2 {width: 4%; height: 18px; background-color: #ff9800;}
+.bar-1 {width: 15%; height: 18px; background-color: #f44336;}
+
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+    .side, .middlebar {
+        width: 100%;
+    }
+    .right {
+        display: none;
+    }
+}
+
+.col-align-center {
+	text-align: center;
+}
+
+.font-weight-size{
+	font-weight:bold;
+	font-size:24px;
+	text-align:center;
+}
+</style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+</head>
+<body>
+<section>
+<!-- <div class="form-group">
+    <label for="sort" class="col-sm-2 control-label">Select Category: </label>
+    <div class="col-sm-6">
+        <select class="form-control" onchange="setCategory(this)">
+            <option value="Musical_Instruments">Musical Instruments</option>
+            <option value="Movies">Movies</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Health">Health</option>
+            <option value="Sports">Sports</option>
+            <option value="Toys">Toys</option>
+        </select>
+     </div>
+</div>
+-->
+
+<div class="row">
+<div class="col-sm-6 offset-sm-4">
+<img src="amazon.jpg" height="130px" />
+</div>
+</div>
+<br />
+<br />
+<div class="row">
+  <div class="col-sm-12">
+<p class="text font-weight-size" style="margin-left:5px;font-size:30px">Most Purchased Categories</p>
+</div>
+</div>
+<br />
+<div class="row">
+
+  <div class="col-sm-2 col-align-center">
+    <!-- <img src="Robot.jpg" id="pic1" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="novels();" alt="" border"0"/> -->
+	<i class="fa fa-desktop fa-5x" id="pic0" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="setCategory(this.id,'Electronics');"style="opacity:1;border:1"></i>
+    
+	
+    <div class="middle" id="pic0t" style="opacity:1">
+    <span class="text font-weight-size" style="font-size:20px">Electronics</span>
+    </div>
+	
+	
+  </div>
+  
+  <div class="col-sm-2 col-align-center">
+    <!-- <img src="Robot.jpg" id="pic1" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="novels();" alt="" border"0"/> -->
+	<i class="fa fa-medkit fa-5x" id="pic1" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="setCategory(this.id,'Health');"style="opacity:0.3;border:1"></i>
+    
+	
+    <div class="middle" id="pic1t" style="opacity:0.3">
+    <span class="text font-weight-size" style="font-size:20px">Healthcare</span>
+    </div>
+  </div>
+  
+  <div class="col-sm-2 col-align-center">
+    <!-- <img src="Robot.jpg" id="pic1" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="novels();" alt="" border"0"/> -->
+	<i class="fa fa-video fa-5x" id="pic2" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="setCategory(this.id,'Movies');"style="opacity:0.3;border:1"></i>
+    
+	
+    <div class="middle" id="pic2t" style="opacity:0.3">
+    <span class="text font-weight-size" style="font-size:20px">Movies</span>
+    </div>
+  </div>
+  
+  <div class="col-sm-2 col-align-center">
+    <!-- <img src="Robot.jpg" id="pic1" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="novels();" alt="" border"0"/> -->
+	<i class="fa fa-music fa-5x" id="pic3" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="setCategory(this.id,'Musical_Instruments');"style="opacity:0.3;border:1"></i>
+    
+	
+    <div class="middle" id="pic3t" style="opacity:0.3">
+    <span class="text font-weight-size" style="font-size:20px">Musical Instruments</span>
+    </div>
+  </div>
+  
+  <div class="col-sm-2 col-align-center">
+    <!-- <img src="Robot.jpg" id="pic1" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="novels();" alt="" border"0"/> -->
+	<i class="fa fa-football-ball fa-5x" id="pic4" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="setCategory(this.id,'Sports');"style="opacity:0.3;border:1"></i>
+    
+	
+    <div class="middle" id="pic4t" style="opacity:0.3">
+    <span class="text font-weight-size" style="font-size:20px">Sports</span>
+    </div>
+  </div>
+  
+  <div class="col-sm-2 col-align-center">
+    <!-- <img src="Robot.jpg" id="pic1" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="novels();" alt="" border"0"/> -->
+	<i class="fa fa-gamepad fa-5x" id="pic5" onmouseover="HoverMouse(this.id)" onmouseout="UnHoverMouse(this.id)" onclick="setCategory(this.id,'Toys');"style="opacity:0.3;border:1"></i>
+    
+	
+    <div class="middle" id="pic5t" style="opacity:0.3">
+    <span class="text font-weight-size" style="font-size:20px">Toys</span>
+    </div>
+  </div>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<div class="row">
+<div class="col-sm-6">
+<p class="text font-weight-size" style="margin-left:5px;font-size:20px">Top Trending Brands Based on Reviews</p>
+<svg id="svg1" width="960" height="660" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
+</div>
+
+<div class="col-sm-6">
+<p class="text font-weight-size" id="LDAp" style="margin-right:5px;font-size:20px;visibility:hidden">LDA with 4 topics on</p>
+<svg id="svg2"></svg>
+</div>	
+</div>
+
+<div id='dvProdList'>
+</div>
+
+</section>
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content" style="height:500px">
+    <span class="close">&times;</span>
+      <div style="text-align: center;" class="columnhelpful" id="Title"></div>
+      <div class="row">
+	  <div class="col-xs-6">
+  <div class="column" style="background-color:white;width:inherit" id="column1">
+    
+    
+  </div>
+  </div>
+  
+<div class="col-xs-3">
+  <!--<div class="column" style="background-color:white;padding-left:200px"> -->
+  <div class="column" style="background-color:white;width:inherit;margin-left:15px">
+    <h2></h2>
+    <p></p>
+      <div>
+      <span class="heading">User Rating</span>
+<i class="fa fa-star " id="5st"></i>
+<i class="fa fa-star " id="4st"></i>
+<i class="fa fa-star " id="3st"></i>
+<i class="fa fa-star " id="2st"></i>
+<i class="fa fa-star " id="1st"></i>
+<p id="RatingTitle"></p>
+<hr style="border:3px solid orange">
+
+<div class="row">
+  <div class="side">
+    <div>5 star</div>
+  </div>
+  <div class="middlebar">
+    <div class="bar-container">
+      <div class="bar-5" id="5star" ></div>
+    </div>
+  </div>
+  <div class="side right">
+    <div id="5starValue">150</div>
+  </div>
+  <div class="side">
+    <div>4 star</div>
+  </div>
+  <div class="middlebar">
+    <div class="bar-container">
+      <div class="bar-4"  id="4star"></div>
+    </div>
+  </div>
+  <div class="side right">
+    <div id="4starValue">63</div>
+  </div>
+  <div class="side">
+    <div>3 star</div>
+  </div>
+  <div class="middlebar">
+    <div class="bar-container">
+      <div class="bar-3" id="3star"></div>
+    </div>
+  </div>
+  <div class="side right">
+    <div id="3starValue">15</div>
+  </div>
+  <div class="side">
+    <div>2 star</div>
+  </div>
+  <div class="middlebar">
+    <div class="bar-container">
+      <div class="bar-2" id="2star"></div>
+    </div>
+  </div>
+  <div class="side right">
+    <div id="2starValue">6</div>
+  </div>
+  <div class="side">
+    <div>1 star</div>
+  </div>
+  <div class="middlebar">
+    <div class="bar-container">
+      <div class="bar-1" id="1star"></div>
+    </div>
+  </div>
+  <div class="side right">
+    <div id="1starValue">20</div>
+  </div>
+</div>
+  </div>
+      </div>
+	  </div>
+          <div class="col-xs-3" id="div3">
+			<div class="column" style="background-color:white; overflow: auto; width:300px;margin-left:60px;" id="column3">
+			
+				
+			</div>
+		  </div>
+          
+
+          </div>
+    <!-- <p id="reviewww"></p> -->
+  </div>
+
+</div>
+
+		
+<div class="tooltip" id="tooltipPositive" style="opacity:0;width:100px;background:rgb(122, 203, 116)">
+
+</div>
+
+<div class="tooltip" id="tooltipNegative" style="opacity:0;width:100px;background:rgb(203, 130, 116)">
+
+</div>
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+
+	var selectedId = 'pic0';
+	function HoverMouse(id)
+    {
+        //document.getElementById(id).style.width ="120px";
+        //document.getElementById(id).style.height ="120px";
+        document.getElementById(id).style.WebkitTransition = "all 1s";
+        document.getElementById(id).style.transition = "all 1s"; 
+        document.getElementById(id).style.opacity = 1;
+		document.getElementById(id+'t').style.opacity=1;
+		document.getElementById(id+'t').style.WebkitTransition = "all 1s";
+        document.getElementById(id+'t').style.transition = "all 1s"; 
+    }
+function UnHoverMouse(id)
+    {
+        //document.getElementById(id).style.opacity = 1;
+        //document.getElementById(id).style.width ="110px";
+        //document.getElementById(id).style.height ="110px";
+		
+        //document.getElementById(id).style.opacity = 0.3;
+		
+        /*if(id != "pic00")
+            {
+                
+            }
+		*/
+		for(var i=0;i<6;i++)
+		{
+			if(selectedId != id)
+			{
+				document.getElementById(id).style.opacity = 0.3;
+				document.getElementById(id+'t').style.opacity=0.3;
+			}
+			
+		}
+		
+    }
+	var categoryName = "Electronics";
+	var setCategory = function(id,category)
+	{
+		console.log("in sel category::"+category);
+		//categoryName = selectedOption.value;
+		categoryName = category;
+		for(var i=0;i<6;i++)
+		{
+			if(id == 'pic'+i)
+			{
+				selectedId = 'pic'+i;
+				continue;
+			}
+			document.getElementById('pic'+i).style.opacity = 0.3;
+			document.getElementById('pic'+i+'t').style.opacity=0.3;
+		}
+		init(category)
+	}
+
+	var init = function(category)
+	{
+	console.log("category::"+category)
+    var svg = d3.select("#svg1"),
+        width = +svg.attr("width"),
+        height = +svg.attr("height");
+	svg.selectAll("*").remove();
+	d3.select("#tooltipDiv").remove();
+	d3.select("#tooltipDiv1").remove();
+	d3.select("#svg2").selectAll("*").remove();
+	d3.select("#LDAp").style("visibility","hidden");
+
+	//$("#dvProdList").html("");
+	//$('#dvProdList > img').remove();
+    // Define the div for the tooltip
+    var div = d3.select("body").append("div")
+		.attr("id","tooltipDiv")
+        .attr("class", "tooltip")
+        .style("opacity", 0)
+        .style("height", "75px");
+		
+	var div1 = d3.select("#tooltipNegative")
+	var div2 = d3.select("#tooltipPositive")
+
+	/*svg.append("text")
+        .attr("x", 20)
+        .attr("y", 10 )
+        .attr("dy", "3.5em" )
+        .attr("text-anchor", "start")
+        .style("font-size", "28px")
+        .style("font-weight", "bold")
+        .style("background-color", "orange")
+        .text("Trending Brands based on Reviews")
+	*/
+	new_circle1 = svg.append("circle")
+        .attr("r", 0)
+        .style("fill","transparent")
+        //.style("stroke","#ff7167")
+        .style("stroke",d3.rgb(203, 130, 116))
+        .style("stroke-width",50);
+
+
+    new_circle2 = svg.append("circle")
+        .attr("r", 0)
+        .style("fill","transparent")
+        //.style("stroke","#a2dd9b")
+        .style("stroke",d3.rgb(122, 203, 116))
+        .style("stroke-width",50)
+        .style("stroke-dashoffset",0);
+
+    
+
+    var pack = d3.layout.pack()
+        .size([width-150, height])
+        .padding(27.5);
+
+	console.log("before csv"+categoryName+"-bubbleCloud.csv");
+    d3.csv(categoryName+"-bubbleCloud.csv", function(d) {
+        d.value = +d["count"];
+        d.Call_Type = d["brand"]
+		d.pos = +d["pos"];
+        d.neg = +d["neg"];
+        d.imageUrl = d["image"];
+		//console.log("inside"+d["brand"]+d["count"]+d["pos"]+d["neg"]);
+        return d;
+    }, function(error, data) {
+        if (error) throw error;
+
+
+
+        /*var color = d3.scale.ordinal()
+            .domain(data.map(function(d){ return d.Call_Type;}))
+            .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
+                '#ffe9a8','#b9bfe3','#fddaec']);
+		*/
+		
+		var color = d3.scale.ordinal()
+            .domain(data.map(function(d){ return d.Call_Type;}))
+            //.range(['#d7c5ed','#bc9ee0','#a177d4','#8651c8','#6c37ae','#542b88','#3c1f61','#24123a'])
+			//.range(['#13266c','#1b3597','#2344c3','#3c5ddc','#6881e4','#93a5ec','#bec9f3','#c9d1ef']);
+			//.range(['#e6c200','#ffd700','#ffe766','#ffeb80','#ffef99','#fff3b3','#fff7cc','#fffbe6']);
+			.range(['#e69500','#ffa500','#ffae1a','#ffb733','#ffc966','#ffd280','#ffe4b3','#ffedcc']);
+
+		console.log(color(1))
+
+        var root = d3.layout.hierarchy({children: data})
+            .value(function(d) { return d.value; })
+			
+		var nodes = pack.nodes({children:data}).filter(function(d) { return     !d.children; });
+
+			//console.log("y"+pack(root).leaves());
+			
+		console.log("before node");
+        var node = svg.selectAll(".node")
+            //.data(pack(root).children())
+			.data(nodes)
+			.enter().append("g")
+            .attr("class", "node")
+			//var y = d.y - 30
+            .attr("transform", function(d) { var y = d.y - 50; return "translate(" + d.x + "," + y + ")"; });
+		console.log("after node");
+
+        node.append("circle")
+            .attr("id", function(d) { return d.id; })
+            .attr("r", function(d) { return (d.r); })
+            .style("fill", function(d) { return color(d.Call_Type); })
+            .on("mouseover", function(d) {
+			//console.log("d:::"+d.value+d.data.Call_Type);
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                var duration = 300;
+				onHover(d);
+                
+                /*d3.select(this)
+                    .transition()
+                    .duration(0)
+                    .attr("r",function(d) { return d.r; })
+                    .style("opacity",1)
+
+                data.forEach(function(d, i) {
+                    //console.log(d.value);
+                    node.transition().duration(duration).delay(i * duration)
+                        .attr("r", d.value);
+                });
+				*/
+
+
+
+                div.html(d.Call_Type + ": <br>"+d.value + " reviews"  )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+                
+            })
+			.on("mousedown", function(d) {
+				console.log("in mousedown");
+				var circumference = 2*Math.PI*d.r;
+                console.log("circumference is "+circumference);
+                var donut_dashval = ""+(circumference*(d.pos/d.value))+","+(circumference*(d.neg/d.value))+"";
+                console.log("donut val is"+donut_dashval);
+
+                new_circle1
+                    .attr("cx", d.x)
+                    .attr("cy", d.y - 50)
+                    .attr("r", d.r)
+					.on("mouseover", function() {
+			//console.log("d:::"+d.value+d.data.Call_Type);
+                div1.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                var duration = 300;
+				
+				div1.html("Negative Sentiment: "+(d.neg/d.value * 100).toPrecision(4)+"%"  )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", function() {
+
+                div1.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+                
+            });
+
+
+                new_circle2
+                    .attr("cx", d.x)
+                    .attr("cy", d.y - 50)
+                    .attr("r", d.r)
+                    .style("stroke-dasharray",""+circumference/2+","+circumference/2+"")
+					.on("mouseover", function() {
+			//console.log("d:::"+d.value+d.data.Call_Type);
+                div2.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                var duration = 300;
+				
+				div2.html("Positive Sentiment: "+(d.pos/d.value * 100).toPrecision(4)+"%"  )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", function() {
+
+                div2.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+                
+            });
+
+                new_circle2.transition().duration(1000).style("stroke-dasharray",donut_dashval);
+				onClick(d.Call_Type);
+			});
+
+
+
+        node.append("text")
+            .text(function(d) {
+
+                    return d.Call_Type;
+            });
+
+
+
+        
+        // legend.append("rect")
+        //     .attr("x", 0)
+        //     .attr("y", function(d, i) { return 20 * i; })
+        //     .attr("width", 15)
+        //     .attr("height", 15)
+        //     .style("fill", function(d) { return color(d.Call_Type)});
+
+
+        // legend.append("text")
+        //     .attr("x", 25)
+        //     .attr("text-anchor", "start")
+        //     .attr("dy", "1em")
+        //     .attr("y", function(d, i) { return 20 * i; })
+        //     .text(function(d) {return d.Call_Type;})
+        //     .attr("font-size", "12px");
+        //
+        //
+        // legend.append("text")
+        //     .attr("x",31)
+        //     .attr("dy", "-.2em")
+        //     .attr("y",-10)
+        //     .text("Call Type")
+        //     .attr("font-size", "17px");
+
+
+
+    });
+
+	};
+	
+	init(categoryName)
+	var onHover = function(brand)
+	{
+	
+	//$("#dvProdList").html("");
+	//$('#dvProdList > img').remove(); 
+	
+	
+	var width = 960,
+    height = 660,
+    padding = 1.5, // separation between same-color nodes
+    clusterPadding = 6, // separation between different-color nodes
+    maxRadius = 12;
+
+
+var color = d3.scale.ordinal()
+      //.range(["#ed752a", "#80f442", "#E4002B", "#7A99AC"]);
+      //.range(['#fbb4ae','#b3cde3','#ccebc5','#fddaec']);
+	  .range(['#D1DDCD','#EED4C0','#F4A899','#CCA7B4']);
+
+
+/*d3.text("word_groups.csv", function(error, text) {
+  if (error) throw error;
+  var colNames = "text,size,group\n" + text;
+  var data = d3.csv.parse(colNames);
+
+  data.forEach(function(d) {
+    d.size = +d.size;
+  });
+*/
+
+//var selectedBrand = "Fender";
+
+
+		
+var selectedBrand = brand.Call_Type;
+var categoryVarName = categoryName + "_bubble_cloud_data";
+console.log("changed::"+categoryVarName);
+var data = window[categoryVarName][selectedBrand];
+//var data = musical_instruments_bubble_cloud_data[selectedBrand];
+
+
+var total = 0;
+
+var min = Number.MAX_SAFE_INTEGER
+var max = Number.MIN_SAFE_INTEGER
+data.forEach(function(d) {
+	d.count = +d.count;
+	if(d.count < min)
+	{
+		min = d.count;
+	}
+	if(d.count > max)
+	{
+		max = d.count;
+	}
+	
+	//total += d.count
+});
+
+//unique cluster/group id's
+var cs = [];
+data.forEach(function(d){
+        if(cs.indexOf(d.label) == -1) {
+            cs.push(d.label);
+        }
+});
+
+var n = data.length, // total number of nodes
+    m = cs.length; // number of distinct clusters
+
+//create clusters and nodes
+var clusters = new Array(m);
+var nodes = [];
+console.log("min::"+min+"max::"+max);
+for (var i = 0; i<n; i++){
+    nodes.push(create_nodes(data,i,min,max));
+}
+
+var force = d3.layout.force()
+    .nodes(nodes)
+    .size([width, height])
+    .gravity(.02)
+    .charge(0)
+    .on("tick", tick)
+    .start();
+
+var svg = d3.select("#svg2")
+    .attr("width", width)
+    .attr("height", height);
+	
+
+svg.selectAll("*").remove();
+d3.select("#tooltipDiv1").remove();
+
+var div1 = d3.select("body").append("div")
+		.attr("id","tooltipDiv1")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+var node = svg.selectAll("circle")
+    .data(nodes)
+    .enter().append("g").call(force.drag);
+
+
+node.append("circle")
+    .style("fill", function (d) {
+    return color(d.cluster);
+    })
+    .attr("r", function(d){return d.radius})
+	.attr("title",function(d) { return d.text; })
+	.on("mouseover", function(d) {
+			//console.log("d:::"+d.value+d.data.Call_Type);
+                div1.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                var duration = 300;
+				
+                div1.html(d.text)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+
+                div1.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+                
+            })
+    
+
+node.append("text")
+      .attr("dy", ".3em")
+      .style("text-anchor", "middle")
+      .text(function(d) { return d.text.substring(0, d.radius / 3); });
+      //.text(function(d) { return d.text; });
+
+/*svg.append("text")
+        .attr("x", 20)
+        .attr("y", 10 )
+        .attr("dy", "3.5em" )
+        .attr("text-anchor", "start")
+        .style("font-size", "28px")
+        .style("font-weight", "bold")
+        .text("LDA with 4 topics on "+selectedBrand)*/
+		
+	
+	document.getElementById('LDAp').innerHTML="LDA with 4 topics on "+selectedBrand;
+	d3.select("#LDAp").style("visibility","visible");
+
+
+function create_nodes(data,node_counter,min,max) {
+  var a = 20.0;
+  var b = 50.0;
+  var i = cs.indexOf(data[node_counter].label),
+      r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
+      d = {
+        cluster: i,
+        //radius: Math.log(data[node_counter].count)*9.0,
+		radius: (b-a) * (data[node_counter].count - min) / (max - min) + a, //normalize
+        text: data[node_counter].word,
+        x: Math.cos(i / m * 2 * Math.PI) * 200 + width / 2 + Math.random(),
+        y: Math.sin(i / m * 2 * Math.PI) * 200 + height / 2 + Math.random()
+      };
+  if (!clusters[i] || (r > clusters[i].radius)) clusters[i] = d;
+  return d;
+};
+
+function tick(e) {
+	//console.log("here");
+    node.each(cluster(10 * e.alpha * e.alpha))
+        .each(collide(.5))
+    .attr("transform", function (d) {
+        var k = "translate(" + d.x + "," + d.y + ")";
+        return k;
+    })
+
+}
+
+// Move d to be adjacent to the cluster node.
+function cluster(alpha) {
+    return function (d) {
+        var cluster = clusters[d.cluster];
+        if (cluster === d) return;
+        var x = d.x - cluster.x,
+            y = d.y - cluster.y,
+            l = Math.sqrt(x * x + y * y),
+            r = d.radius + cluster.radius;
+        if (l != r) {
+            l = (l - r) / l * alpha;
+            d.x -= x *= l;
+            d.y -= y *= l;
+            cluster.x += x;
+            cluster.y += y;
+        }
+    };
+}
+
+// Resolves collisions between d and all other circles.
+function collide(alpha) {
+    var quadtree = d3.geom.quadtree(nodes);
+    return function (d) {
+        var r = d.radius + maxRadius + Math.max(padding, clusterPadding),
+            nx1 = d.x - r,
+            nx2 = d.x + r,
+            ny1 = d.y - r,
+            ny2 = d.y + r;
+        quadtree.visit(function (quad, x1, y1, x2, y2) {
+            if (quad.point && (quad.point !== d)) {
+                var x = d.x - quad.point.x,
+                    y = d.y - quad.point.y,
+                    l = Math.sqrt(x * x + y * y),
+                    r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? padding : clusterPadding);
+                if (l < r) {
+                    l = (l - r) / l * alpha;
+                    d.x -= x *= l;
+                    d.y -= y *= l;
+                    quad.point.x += x;
+                    quad.point.y += y;
+                }
+            }
+            return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+        });
+    };
+}
+//});
+
+Array.prototype.contains = function(v) {
+    for(var i = 0; i < this.length; i++) {
+        if(this[i] === v) return true;
+    }
+    return false;
+	}
+	};
+	
+var onClick = function(brand)
+{
+	$("#dvProdList").html("");
+	$('#dvProdList > img').remove(); 
+	//brand = brand.replace(' ','_');
+	brand = brand.replace(/\s/g,'_');
+	var varName = brand+'_'+categoryName;
+	
+	var currentBrand = window[varName];
+	var imgList= "";
+	var heading = '<p class="text font-weight-size" style="font-size:16px">Top trending Products of '+brand+' Brand - Click for Details';
+	$('#dvProdList').append(heading);
+	$.each(currentBrand, function (idx,val) {
+           
+            imgList+='<tr><img src="'+this.imUrl+'" id=\''+this.title+'\' title=\''+this.title+'\' onclick="rating('+idx+','+'\''+brand+'\''+')" " style="height:300px;width: 250px;padding:20px"></tr>';
+            
+                
+        });
+            var finalList='<table>'+imgList+"</table>";
+           // alert(finalList);
+           
+        $('#dvProdList').append(finalList);
+		$("#dvProdList").scrollTop(0);
+		
+};
+
+var modal = document.getElementById('myModal');
+function rating(idx, brand)
+    {
+        //var jsonURL = jsonfile;
+		var name = brand+'_'+categoryName;
+		console.log("prod:::"+idx+brand+"::"+name);
+        modal.style.display = "block";
+		var nowBrand = window[name]
+		var prod = nowBrand[idx];
+         
+                     var temp;
+					 
+					 var total = prod.rating[0] + prod.rating[1] + prod.rating[2] + prod.rating[3] + prod.rating[4];
+					 
+					 var weightedTotal = prod.rating[0] + (prod.rating[1]*2) + (prod.rating[2] * 3) + (prod.rating[3] * 4) + (prod.rating[4] * 5);
+					 console.log("this.rating::"+prod.rating[3] / total);
+                    temp=(prod.rating[4] / total * 100).toPrecision(2)
+                    var elem=document.getElementById('5star');
+                   elem.style.width=temp+"%";
+                    document.getElementById('5starValue').innerHTML=temp+"%";
+                    
+                    temp=(prod.rating[3] / total * 100).toPrecision(2)
+                    var elem=document.getElementById('4star');
+                   elem.style.width=temp+"%";
+                    document.getElementById('4starValue').innerHTML=temp+"%";
+                    
+                     temp=(prod.rating[2] / total * 100).toPrecision(2)
+                    var elem=document.getElementById('3star');
+                   elem.style.width=temp+"%";
+                    document.getElementById('3starValue').innerHTML=temp+"%";
+                    
+                     temp=(prod.rating[1] / total * 100).toPrecision(2)
+                    var elem=document.getElementById('2star');
+                   elem.style.width=temp+"%";
+                    document.getElementById('2starValue').innerHTML=temp+"%";
+                    
+                     temp=(prod.rating[0] / total * 100).toPrecision(2)
+                    var elem=document.getElementById('1star');
+                   elem.style.width=temp+"%";
+                    document.getElementById('1starValue').innerHTML=temp+"%";
+
+                    
+                    document.getElementById('5st').classList.add('checked');
+                     document.getElementById('4st').classList.add('checked');
+                     document.getElementById('3st').classList.add('checked');
+                     document.getElementById('2st').classList.add('checked');
+                     document.getElementById('1st').classList.add('checked');
+                      
+                    
+                  //var OverAllRating = (total/5).toPrecision(3);
+                  var OverAllRating = (weightedTotal/total).toPrecision(3);
+				  console.log("OverAllRating::"+OverAllRating);
+				  
+                  if(OverAllRating >=4 && OverAllRating < 5)
+                        {
+                           // alert(this.OverAllRating)
+                     //console.log("in 1st")
+                     document.getElementById('1st').classList.remove('checked');
+                        }
+                    else if(OverAllRating>=3 && OverAllRating<4)
+                        {
+                          //  alert(this.OverAllRating)
+						  //console.log("in 2nd")
+                           document.getElementById('2st').classList.remove('checked');
+                            document.getElementById('1st').classList.remove('checked');
+                        }
+                    else if(OverAllRating>=2 && OverAllRating<3)
+                        { // alert(2)
+                          //  alert(this.OverAllRating)
+						  //console.log("in 3rd")
+                           document.getElementById('3st').classList.remove('checked');
+                            document.getElementById('2st').classList.remove('checked');
+                            document.getElementById('1st').classList.remove('checked');
+                        }
+                    else if(OverAllRating<1)
+                        {
+                           // alert(3)
+                          //  alert("entered");
+                       //     alert(this.OverAllRating)
+					   //console.log("in 4th")
+                            document.getElementById('4st').classList.remove('checked');
+                            document.getElementById('3st').classList.remove('checked');
+                            document.getElementById('2st').classList.remove('checked');
+                            document.getElementById('1st').classList.remove('checked');
+                        }
+                    text="<b>"+OverAllRating+"</b> Average Based on <b>"+total+"</b> reviews";
+                    document.getElementById('RatingTitle').innerHTML=text;
+                    
+                    //ReviewImage='<img src="'+this.ReviewImage+'" style="height:250px;width: 600px">'
+                    //document.getElementById('column1').innerHTML=ReviewImage;
+                    
+                    helpFulReview='<p class="text" style="word-wrap: break-word; font-size:18px; width:inherit"> Most HelpFul Review </p><p class="text" style="background-color:orange;height:40%;overflow:auto;width:inherit">"'+prod.best_review[0]+'"</p>';
+					//console.log("lol::"+JSON.stringify(document.getElementById('div3')))
+                    document.getElementById('column3').innerHTML=helpFulReview;
+                    
+                    TitleName='<h3 style="font-size:20px">'+prod.title+'</h3>';
+                    document.getElementById('Title').innerHTML=TitleName;
+					
+					
+					updateWordCloud(categoryName+'_word_cloud',brand+prod.asin);
+    }
+	var span = document.getElementsByClassName("close")[0];
+    span.onclick = function() {
+    modal.style.display = "none";
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.4/seedrandom.min.js"></script>
+<script src='layout.cloud.js'></script>
+<script src="./data.js" type="text/javascript"></script>
+<script src="./wordCloud.js" type="text/javascript"></script>
+<script src="Processed Files/Electronics/Electronics-data.js" type="text/javascript"></script>
+<script src="Processed Files/Health/Health-data.js" type="text/javascript"></script>
+<script src="Processed Files/Movies/Movies-data.js" type="text/javascript"></script>
+<script src="Processed Files/Sports/Sports-data.js" type="text/javascript"></script>
+<script src="Processed Files/Toys/Toys-data.js" type="text/javascript"></script>
+</body>
+</html>
