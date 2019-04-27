@@ -442,7 +442,7 @@ h4:before
 <br />
 <div class="row">
   <div class="col-sm-12">
-<p class="text font-weight-size" style="margin-left:5px;font-size:30px">Most Purchased Categories</p>
+<p class="text font-weight-size" style="margin-left:5px;font-size:30px">Most Purchased Categories of Brands</p>
 </div>
 </div>
 <br />
@@ -517,12 +517,12 @@ h4:before
 <br />
 <div class="row">
 <div class="col-sm-6">
-<p class="text font-weight-size" style="margin-left:5px;font-size:20px">Top Trending Brands Based on Reviews</p>
+<p class="text font-weight-size" style="margin-left:5px;font-size:20px">Top Trending Brands Based on Product Sentiment</p>
 <svg id="svg1" width="960" height="660" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
 </div>
 
 <div class="col-sm-6">
-<p class="text font-weight-size" id="LDAp" style="margin-right:5px;font-size:20px;visibility:hidden">LDA with 4 topics on</p>
+<p class="text font-weight-size" id="LDAp" style="margin-right:5px;font-size:20px;visibility:hidden">LDA with 4 topics on the</p>
 <svg id="svg2"></svg>
 </div>	
 </div>
@@ -789,12 +789,12 @@ function UnHoverMouse(id)
 			//.range(['#e69500','#ffa500','#ffae1a','#ffb733','#ffc966','#ffd280','#ffe4b3','#ffedcc']);
 			.range(['#ffedcc','#ffe4b3','#ffd280','#ffc966','#ffb733','#ffae1a','#ffa500','#e69500']);
 
-		console.log(color(1))
+		//console.log(color(1))
 
         var root = d3.layout.hierarchy({children: data})
             .value(function(d) { return d.value; })
 			
-		var nodes = pack.nodes({children:data}).filter(function(d) { return     !d.children; });
+		var nodes = pack.nodes({children:data}).filter(function(d) { return !d.children; });
 
 			//console.log("y"+pack(root).leaves());
 			
@@ -835,7 +835,7 @@ function UnHoverMouse(id)
 
 
 
-                div.html(d.Call_Type + ": <br>"+d.value + " reviews"  )
+                div.html(d.Call_Type + ": <br>"+d.value + " products"  )
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
             })
@@ -902,15 +902,37 @@ function UnHoverMouse(id)
             });
 
                 new_circle2.transition().duration(1000).style("stroke-dasharray",donut_dashval);
-				onClick(d.Call_Type);
+				if( d.Call_Type != 'California Exotic Novelties' && d.Call_Type != 'Doc Johnson')
+					onClick(d.Call_Type);
+				else{
+					$("#dvProdList").html("");
+					$('#dvProdList > img').remove();
+					//sleep(1000);
+					alert("Products are NSFW and have been disabled from view");
+				}
 			});
 
 
 
         node.append("text")
+		.style("word-wrap","break-word")
             .text(function(d) {
-
-                    return d.Call_Type;
+					var text;
+					switch(d.Call_Type)
+					{
+						case "LIONS GATE" : text = "Lions Gate";
+														break;
+						case "LIONS GATE HOME ENT" : text = "Lions Home Ent";
+														break;
+						case "WELLSPRING_GENIUS" : text = "Wellspring";
+													break;
+						case "Great American Products" : text = "Great American";
+													break;
+						default:
+								text = d.Call_Type;
+					}
+                    //return d.Call_Type.substring(0,13);
+                    return text;
             });
 
 
@@ -983,7 +1005,7 @@ var color = d3.scale.ordinal()
 		
 var selectedBrand = brand.Call_Type;
 var categoryVarName = categoryName + "_bubble_cloud_data";
-console.log("changed::"+categoryVarName);
+//console.log("changed::"+categoryVarName);
 var data = window[categoryVarName][selectedBrand];
 //var data = musical_instruments_bubble_cloud_data[selectedBrand];
 
@@ -1092,7 +1114,7 @@ node.append("text")
         .text("LDA with 4 topics on "+selectedBrand)*/
 		
 	
-	document.getElementById('LDAp').innerHTML="LDA with 4 topics on "+selectedBrand;
+	document.getElementById('LDAp').innerHTML="LDA with 4 topics on the "+selectedBrand+" brand";
 	d3.select("#LDAp").style("visibility","visible");
 
 
