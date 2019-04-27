@@ -760,10 +760,12 @@ function UnHoverMouse(id)
 	console.log("before csv"+categoryName+"-bubbleCloud.csv");
     d3.csv(categoryName+"-bubbleCloud.csv", function(d) {
         d.value = +d["count"];
+		d.negValue = - d.value;
         d.Call_Type = d["brand"]
 		d.pos = +d["pos"];
         d.neg = +d["neg"];
-        d.imageUrl = d["image"];
+		d.loc = d["loc"];
+        //d.imageUrl = d["image"];
 		//console.log("inside"+d["brand"]+d["count"]+d["pos"]+d["neg"]);
         return d;
     }, function(error, data) {
@@ -777,12 +779,15 @@ function UnHoverMouse(id)
                 '#ffe9a8','#b9bfe3','#fddaec']);
 		*/
 		
+		//console.log("sdfs"+data.map(function(d){ return d.loc;}).sort())
+		
 		var color = d3.scale.ordinal()
-            .domain(data.map(function(d){ return d.Call_Type;}))
+            .domain(data.map(function(d){ return d.value;}).sort(function(a,b){return a-b}))
             //.range(['#d7c5ed','#bc9ee0','#a177d4','#8651c8','#6c37ae','#542b88','#3c1f61','#24123a'])
 			//.range(['#13266c','#1b3597','#2344c3','#3c5ddc','#6881e4','#93a5ec','#bec9f3','#c9d1ef']);
 			//.range(['#e6c200','#ffd700','#ffe766','#ffeb80','#ffef99','#fff3b3','#fff7cc','#fffbe6']);
-			.range(['#e69500','#ffa500','#ffae1a','#ffb733','#ffc966','#ffd280','#ffe4b3','#ffedcc']);
+			//.range(['#e69500','#ffa500','#ffae1a','#ffb733','#ffc966','#ffd280','#ffe4b3','#ffedcc']);
+			.range(['#ffedcc','#ffe4b3','#ffd280','#ffc966','#ffb733','#ffae1a','#ffa500','#e69500']);
 
 		console.log(color(1))
 
@@ -806,7 +811,7 @@ function UnHoverMouse(id)
         node.append("circle")
             .attr("id", function(d) { return d.id; })
             .attr("r", function(d) { return (d.r); })
-            .style("fill", function(d) { return color(d.Call_Type); })
+            .style("fill", function(d) { return color(d.value); })
             .on("mouseover", function(d) {
 			//console.log("d:::"+d.value+d.data.Call_Type);
                 div.transition()
@@ -1292,7 +1297,7 @@ function rating(idx, brand)
                     //ReviewImage='<img src="'+this.ReviewImage+'" style="height:250px;width: 600px">'
                     //document.getElementById('column1').innerHTML=ReviewImage;
                     
-                    helpFulReview='<p class="text" style="word-wrap: break-word; font-size:18px; width:inherit"> Most HelpFul Review </p><p class="text" style="background-color:orange;height:40%;overflow:auto;width:inherit">"'+prod.best_review[0]+'"</p>';
+                    helpFulReview='<p class="text" style="word-wrap: break-word; font-size:18px; width:inherit">Highest Positive Sentiment Review</p><p class="text" style="background-color:orange;height:40%;overflow:auto;width:inherit">"'+prod.best_review[0]+'"</p>';
 					//console.log("lol::"+JSON.stringify(document.getElementById('div3')))
                     document.getElementById('column3').innerHTML=helpFulReview;
                     
